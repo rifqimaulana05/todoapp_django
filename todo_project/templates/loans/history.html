@@ -1,0 +1,77 @@
+{% extends "header.html" %}
+{% load static %}
+
+{% block content %}
+<div class="container mt-5">
+
+  <!-- Judul -->
+  <div class="d-flex align-items-center mb-4">
+    <h2 class="me-2">📖 Buku yang Saya Pinjam</h2>
+  </div>
+
+  <!-- Alert -->
+  {% if messages %}
+    {% for message in messages %}
+      <div class="alert alert-success alert-dismissible fade show" role="alert">
+        {{ message }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+      </div>
+    {% endfor %}
+  {% endif %}
+
+  <!-- Card -->
+  <div class="card shadow-sm">
+    <div class="card-body">
+
+      {% if loans %}
+      <div class="table-responsive">
+        <table class="table table-bordered table-hover align-middle text-center">
+          <thead class="table-primary">
+            <tr>
+              <th>No</th>
+              <th>Judul Buku</th>
+              <th>Tanggal Pinjam</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for loan in loans %}
+            <tr>
+              <td>{{ forloop.counter }}</td>
+              <td class="text-start">
+                <strong>{{ loan.book.title }}</strong>
+              </td>
+              <td>
+                {{ loan.borrowed_at|date:"d M Y" }}
+              </td>
+              <td>
+                {% if loan.returned_at %}
+                  <span class="badge bg-secondary">Dikembalikan</span>
+                {% else %}
+                  <span class="badge bg-success">Dipinjam</span>
+                {% endif %}
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+        <a href="{% url 'index' %}" class="btn btn-primary mt-2">
+            Kembali ke Daftar Buku
+          </a>
+      </div>
+
+      {% else %}
+        <div class="text-center text-muted py-4">
+          <h5>📭 Belum ada buku dipinjam</h5>
+          <p>Silakan pinjam buku di halaman daftar buku</p>
+          <a href="{% url 'book_list' %}" class="btn btn-primary mt-2">
+            Lihat Daftar Buku
+          </a>
+        </div>
+      {% endif %}
+
+    </div>
+  </div>
+
+</div>
+{% endblock %}

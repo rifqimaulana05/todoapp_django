@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="jumbotron text-center">
+  <h1 class="display-4">Welcome to the Todo App!</h1>
+  <p class="lead">Manage your tasks efficiently and stay organized.</p>
+  <hr class="my-4" />
+  <p>Get started by creating your first todo item.</p>
+  <a class="btn btn-primary btn-lg" href="/todo/" role="button">Create Todo</a>
+</div>
+
+<div class="card todo-card mt-4">
+  <div class="card-header todo-header d-flex justify-content-between">
+    <h5 class="mb-0">Todo List</h5>
+    <a href="/todo/create" class="btn btn-add btn-sm">+ Add Todo</a>
+  </div>
+
+  <div class="card-body">
+    <table class="table table-hover todo-table">
+      <thead>
+        <tr>
+          <th>No</th>
+          <th>Task</th>
+          <th>Status</th>
+          <th>Aksi</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for todo in todos %}
+        <tr>
+          <td class="text-center">{{ forloop.counter }}</td>
+          <td>{{ todo.title }}</td>
+          <td class="text-center">
+            {% if todo.completed %}
+              <span class="badge badge-done">Done</span>
+            {% else %}
+              <span class="badge badge-pending">Pending</span>
+            {% endif %}
+          </td>
+          <td class="text-center">
+            <a href="/todo/edit/{{ todo.id }}" class="btn btn-edit btn-sm">Edit</a>
+            <a href="/todo/delete/{{ todo.id }}" class="btn btn-delete btn-sm"
+               onclick="return confirm('Yakin hapus todo ini?')">Delete</a>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+
+
+<div class="card todo-card mt-4">
+  <div class="card-header todo-header">
+    <h5 class="mb-0">Form Todo</h5>
+  </div>
+
+  <div class="card-body">
+    <form method="POST" class="todo-form">
+      {% csrf_token %}
+      
+      <div class="mb-3">
+        <label class="form-label">Judul Todo</label>
+        {{ form.title }}
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label">Deskripsi</label>
+        {{ form.description }}
+      </div>
+
+      <button type="submit" class="btn btn-primary">Simpan</button>
+      <a href="/todo/" class="btn btn-secondary">Batal</a>
+    </form>
+  </div>
+</div>
+
+
+{% endblock %}

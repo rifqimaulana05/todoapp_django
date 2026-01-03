@@ -1,0 +1,74 @@
+{% extends 'header.html' %}
+{% block content %}
+
+<!-- NAVBAR -->
+
+
+<!-- HERO -->
+<section class="py-5 text-center bg-white shadow-sm">
+  <div class="container">
+    <h1 class="fw-bold">Sistem Perpustakaan Digital</h1>
+    <p class="text-muted mt-2">
+      Cari dan pinjam buku favoritmu dengan mudah
+    </p>
+  </div>
+</section>
+
+<!-- DAFTAR BUKU -->
+<section class="container my-5">
+  <h3 class="mb-4">📖 Daftar Buku</h3>
+
+  <div class="card shadow-sm">
+    <div class="card-body">
+
+      <table class="table table-bordered table-hover align-middle text-center">
+        <thead class="table-primary">
+          <tr>
+            <th>Judul</th>
+            <th>Penulis</th>
+            <th>Stok</th>
+            <th>Aksi</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for book in books %}
+          <tr>
+            <td>{{ book.title }}</td>
+            <td>{{ book.author }}</td>
+            <td>
+              {% if book.stock > 0 %}
+                <span class="badge bg-success">{{ book.stock }}</span>
+              {% else %}
+                <span class="badge bg-danger">Habis</span>
+              {% endif %}
+            </td>
+            <td>
+              {% if book.stock > 0 %}
+                {% if user.is_authenticated %}
+                  <button class="btn btn-sm btn-primary">
+                    Pinjam
+                  </button>
+                {% else %}
+                  <a href="/accounts/login/" class="btn btn-sm btn-warning">
+                    Login dulu
+                  </a>
+                {% endif %}
+              {% else %}
+                <button class="btn btn-sm btn-secondary" disabled>
+                  Tidak tersedia
+                </button>
+              {% endif %}
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+            <a href="/books/" class="btn btn-sm btn-warning">
+                Lihat Lebih Banyak
+            </a>
+      </table>
+
+    </div>
+  </div>
+</section>
+
+{% endblock %}
